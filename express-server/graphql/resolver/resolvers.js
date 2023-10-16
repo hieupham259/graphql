@@ -1,5 +1,5 @@
 // Load dummy data
-const {shops, sellers} = require('../data/index')
+const { shops, sellers } = require('../data/index')
 
 const resolvers = {
     // root
