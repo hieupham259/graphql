@@ -9,20 +9,24 @@ const resolvers = require("./graphql/resolver/resolvers")
 // Database Connection
 const connectPostgres = require('./database/postgresql/connection')
 
+// Database Query Method
+const postgresMethods = require('./database/postgresql/queryMethod')
+
 const startServer = async () => {
     const port = process.env.PORT||4000  
     const app = express()
     app.use(bodyParser.json()) 
+    
+    let methods = await postgresMethods()
 
     // Init Apollo Server
     const apolloServer = new ApolloServer({
         typeDefs,
         resolvers,
+        context: () => ({ methods })
+
     })
-
-    let postgresClient = await connectPostgres()
     await apolloServer.start()
-
     apolloServer.applyMiddleware({
         app,
         path: '/graphql'
@@ -35,12 +39,8 @@ const startServer = async () => {
 
     // healthcheck postgresql
     app.get("/postgres", async(req, res) => {
-        query = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"
-        const results = await postgresClient.query(query)
-        return res.json({
-            tables: results.rows,
-            schema: 'default'
-        })
+        let response = await methods.getAllSellers()
+        return res.json(response)
     })
 
     app.listen(port, () =>

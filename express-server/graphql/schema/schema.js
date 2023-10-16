@@ -8,14 +8,12 @@ const typeDefs = gql`
     id: ID!
     name: String
     category: String
-    seller: Seller
   }
 
   type Seller {
     id: ID!
     name: String
     address: String
-    shops: [Shop]
   }
 
   type Query {
