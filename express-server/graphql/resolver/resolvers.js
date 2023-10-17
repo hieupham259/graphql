@@ -34,14 +34,25 @@ const resolvers = {
 	Query: {
 		shops: async (parent, args, { methods }) =>
 			await methods.getAllShops(),
-		shop: async (parent, { id }, { postgresMethods }) =>
-			await postgresMethods.getShopById(id),
-
+		shop: async (parent, { id }, { methods }) =>{
+			return await methods.getShopById(parseInt(id))
+        },
 		sellers: async (parent, args, { methods }) =>
 			await methods.getAllSellers(),
-		seller: async (parent, { id }, { postgresMethods }) =>
-			await postgresMethods.getSellerById(id)
+		seller: async (parent, { id }, { methods }) => {
+	    	return await methods.getSellerById(parseInt(id))
+        }
 	},
+    Shop: {
+        seller: async (parent, args, { methods }) => {
+            return await methods.getSellerByShop(parent.id)
+        }
+    },
+    Seller: {
+        shops: async (parent, args, { methods }) => {
+            return await methods.getShopBySeller(parent.id)
+        }
+    }
 }
 
 module.exports = resolvers
