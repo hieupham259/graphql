@@ -7,7 +7,7 @@ const typeDefs = require("./graphql/schema/schema")
 const resolvers = require("./graphql/resolver/resolvers")
 
 // Database Connection
-const connectPostgres = require('./database/postgresql/connection')
+// const connectPostgres = require('./database/postgresql/connection')
 
 const startServer = async () => {
     const port = process.env.PORT||4000  
@@ -20,7 +20,7 @@ const startServer = async () => {
         resolvers,
     })
 
-    let postgresClient = await connectPostgres()
+    // let postgresClient = await connectPostgres()
     await apolloServer.start()
 
     apolloServer.applyMiddleware({
