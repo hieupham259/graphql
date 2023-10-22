@@ -1,6 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const { ApolloServer } = require('apollo-server-express')
+const { ApolloServerPluginLandingPageGraphQLPlayground } = require('apollo-server-core')
 
 // Load Schema and Resolver GraphQL
 const typeDefs = require("./graphql/schema/schema")
@@ -18,14 +20,23 @@ const startServer = async () => {
     const apolloServer = new ApolloServer({
         typeDefs,
         resolvers,
+        plugins: [
+            ApolloServerPluginLandingPageGraphQLPlayground(),
+        ],
     })
 
     // let postgresClient = await connectPostgres()
     await apolloServer.start()
 
+    const corsOptions = {
+        origin: 'http://149.28.147.84:4000',
+        credentials: true
+    }
+
     apolloServer.applyMiddleware({
         app,
-        path: '/graphql'
+        path: '/graphql',
+        cors: corsOptions
     })
 
     // healthcheck route
