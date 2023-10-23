@@ -17,7 +17,7 @@ const resolvers = {
     },
     Shop: {
         seller: (parent, args) => {
-            return sellers.find(sl => sl.id === parent.id)
+            return sellers.find(sl => sl.id === parent.seller)
         }
     },
     Seller: {

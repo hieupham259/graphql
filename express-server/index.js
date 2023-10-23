@@ -28,15 +28,10 @@ const startServer = async () => {
     // let postgresClient = await connectPostgres()
     await apolloServer.start()
 
-    const corsOptions = {
-        origin: 'http://149.28.147.84:4000',
-        credentials: true
-    }
 
     apolloServer.applyMiddleware({
         app,
-        path: '/graphql',
-        cors: corsOptions
+        path: '/graphql'
     })
 
     // healthcheck route
@@ -45,14 +40,14 @@ const startServer = async () => {
     })
 
     // healthcheck postgresql
-    app.get("/postgres", async(req, res) => {
-        query = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"
-        const results = await postgresClient.query(query)
-        return res.json({
-            tables: results.rows,
-            schema: 'default'
-        })
-    })
+    // app.get("/postgres", async(req, res) => {
+    //     query = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"
+    //     const results = await postgresClient.query(query)
+    //     return res.json({
+    //         tables: results.rows,
+    //         schema: 'default'
+    //     })
+    // })
 
     app.listen(port, () =>
 	    console.log(`Server listening on localhost:4000${apolloServer.graphqlPath}`)
