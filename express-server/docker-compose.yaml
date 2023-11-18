@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  postgresdb:
+    image: postgres
+    container_name: graphql-postgresdb
+    restart: unless-stopped
+    env_file: 
+      - .env
+    environment:
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
+    ports:
+      - $POSTGRES_SERVER_PORT:$POSTGRES_DOCKER_PORT
+    volumes:
+      - db:/var/lib/postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks: 
+      - graphql-js
+
+  app:
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    container_name: graphql-web_server
+    restart: unless-stopped
+    env_file: 
+      - .env
+    ports:
+      - $PORT:$PORT
+    environment:
+      - PORT=$PORT
+      - NODE_ENV=$NODE_ENV
+      - POSTGRES_HOST=$POSTGRES_HOST
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
+      - POSTGRES_PORT=$POSTGRES_DOCKER_PORT
+    stdin_open: true
+    hostname: backend
+    tty: true
+    networks: 
+      - graphql-js
+
+volumes: 
+  db:
+  
+networks:
+  graphql-js:
+    driver: bridge

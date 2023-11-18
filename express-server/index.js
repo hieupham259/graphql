@@ -13,7 +13,7 @@ const connectPostgres = require('./database/postgresql/connection')
 const postgresMethods = require('./database/postgresql/queryMethod')
 
 const startServer = async () => {
-    const port = process.env.PORT||4000  
+    const port = process.env.PORT||4002
     const app = express()
     app.use(bodyParser.json()) 
     
@@ -44,7 +44,7 @@ const startServer = async () => {
     })
 
     app.listen(port, () =>
-	    console.log(`Server listening on localhost:4000${apolloServer.graphqlPath}`)
+	    console.log(`Server listening on localhost:${port}${apolloServer.graphqlPath}`)
     )
 }   
 
