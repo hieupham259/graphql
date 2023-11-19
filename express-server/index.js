@@ -10,27 +10,27 @@ const resolvers = require("./graphql/resolver/resolvers")
 const connectPostgres = require('./database/postgresql/connection')
 
 // Database Query Method
-const postgresMethods = require('./database/postgresql/queryMethod')
+// const postgresMethods = require('./database/postgresql/queryMethod')
 
 const startServer = async () => {
     const port = process.env.PORT||4002
     const app = express()
     app.use(bodyParser.json()) 
     
-    let methods = await postgresMethods()
+    // let methods = await postgresMethods()
 
     // Init Apollo Server
-    const apolloServer = new ApolloServer({
-        typeDefs,
-        resolvers,
-        context: () => ({ methods })
+    // const apolloServer = new ApolloServer({
+    //     typeDefs,
+    //     resolvers,
+    //     context: () => ({ methods })
 
-    })
-    await apolloServer.start()
-    apolloServer.applyMiddleware({
-        app,
-        path: '/graphql'
-    })
+    // })
+    // await apolloServer.start()
+    // apolloServer.applyMiddleware({
+    //     app,
+    //     path: '/graphql'
+    // })
 
     // healthcheck route
     app.get("/", (req, res) => {
@@ -44,7 +44,7 @@ const startServer = async () => {
     })
 
     app.listen(port, () =>
-	    console.log(`Server listening on localhost:${port}${apolloServer.graphqlPath}`)
+	    console.log(`Server listening on localhost:${port}`)
     )
 }   
 
