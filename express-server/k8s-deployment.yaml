@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-graphql-deployment
+  labels:
+    app: express-graphql-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: express-graphql-app
+  template:
+    metadata:
+      labels:
+        app: express-graphql-app
+    spec:
+      containers:
+        - name: express-graphql-container
+          image: hieupham259/minikube-express:latest
+          ports:
+            - containerPort: 4002
+      nodeSelector:
+        role: worker
