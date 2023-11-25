@@ -1,4 +1,4 @@
-Host application with Minikube
+# Host application with Minikube
 1. Create a 2 Nodes Cluster (1 control plane and 1 worker node):
 - minikube start --nodes # 2 express-cluster.
 2. Set a node in this cluster as a worker:
