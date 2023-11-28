@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: express-graphql-service
+spec:
+  selector:
+    app: express-graphql-app
+  ports:
+    - port: 4000
+      targetPort: 4000
+  type: LoadBalancer
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,7 +33,7 @@ spec:
             - containerPort: 4000
           env:
             - name: POSTGRES_HOST
-              value: postgres-service
+              value: postgres
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_USER
@@ -30,16 +42,10 @@ spec:
               value: "postgres"
             - name: POSTGRES_DB
               value: "test"
-        - name: postgres
-          image: postgres:latest
-          ports:
-            - containerPort: 5432
-          env:
-            - name: POSTGRES_USER
-              value: "postgres"
-            - name: POSTGRES_PASSWORD
-              value: "postgres"
-            - name: POSTGRES_DB
-              value: "test"
+            - name: PORT
+              value: "4000"
       nodeSelector:
         role: worker
+
+
+        
