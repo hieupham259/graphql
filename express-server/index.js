@@ -32,6 +32,7 @@ const startServer = async () => {
     //     path: '/graphql'
     // })
 
+    let postgresClient = await connectPostgres()
     // healthcheck route
     app.get("/", (req, res) => {
         res.json({message: `Welcome to the application at ${port}.`})
