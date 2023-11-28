@@ -29,6 +29,7 @@ spec:
       containers:
         - name: express-graphql-container
           image: hieupham259/minikube-express:latest
+          imagePullPolicy: "Always"
           ports:
             - containerPort: 4000
           env:
